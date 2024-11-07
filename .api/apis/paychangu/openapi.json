@@ -1,0 +1,210 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PAYCHANGU INTEGRATION OPTIONS",
+    "version": "unknown"
+  },
+  "servers": [
+    {
+      "url": "https://api.paychangu.com"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "x-default": "",
+        "x-bearer-format": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/payment": {
+      "post": {
+        "summary": "API Reference",
+        "description": "",
+        "operationId": "level-reference",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "amount",
+                  "currency",
+                  "first_name",
+                  "callback_url",
+                  "return_url"
+                ],
+                "properties": {
+                  "amount": {
+                    "type": "string",
+                    "description": "Amount to charge the customer."
+                  },
+                  "currency": {
+                    "type": "string",
+                    "description": "Currency to charge in. [ 'MWK', 'USD' ]",
+                    "default": "MWK"
+                  },
+                  "tx_ref": {
+                    "type": "string",
+                    "description": "Your transaction reference. This MUST be unique for every transaction."
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "This is the first_name of your customer."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "This is the last_name of your customer. (optional)"
+                  },
+                  "callback_url": {
+                    "type": "string",
+                    "description": "This is your IPN url, it is important for receiving payment notification. Successful transactions redirects to this url after payment. {tx_ref} is returned, so you don't need to pass it with your url"
+                  },
+                  "return_url": {
+                    "type": "string",
+                    "description": "Once the customer cancels or after multiple failed attempts, we will redirect to the return_url with the query parameters tx_ref and status of failed. (optional)"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "This is the email address of your customer. Transaction notification will be sent to this email address (optional)"
+                  },
+                  "meta": {
+                    "type": "string",
+                    "description": "You can pass extra information here. (optional)"
+                  },
+                  "uuid": {
+                    "type": "string",
+                    "description": "(optional)"
+                  },
+                  "customization": {
+                    "properties": {
+                      "title": {
+                        "type": "string",
+                        "description": "(optional)"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "(optional)"
+                      }
+                    },
+                    "required": [],
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"message\": \"Hosted payment session generated successfully.\",\n  \"status\": \"success\",\n  \"data\": {\n    \"event\": \"checkout.session:created\",\n    \"checkout_url\": \"https://api.paychangu.com/payment/929878718321\",\n    \"data\": {\n      \"tx_ref\": \"ae041eae-6abd-4602-a949-56fbd65c29fe\",\n      \"currency\": \"MWK\",\n      \"amount\": 800,\n      \"mode\": \"live\",\n      \"status\": \"pending\"\n    }\n  }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Hosted payment session generated successfully."
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "event": {
+                          "type": "string",
+                          "example": "checkout.session:created"
+                        },
+                        "checkout_url": {
+                          "type": "string",
+                          "example": "https://api.paychangu.com/payment/929878718321"
+                        },
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "tx_ref": {
+                              "type": "string",
+                              "example": "ae041eae-6abd-4602-a949-56fbd65c29fe"
+                            },
+                            "currency": {
+                              "type": "string",
+                              "example": "MWK"
+                            },
+                            "amount": {
+                              "type": "integer",
+                              "example": 800,
+                              "default": 0
+                            },
+                            "mode": {
+                              "type": "string",
+                              "example": "live"
+                            },
+                            "status": {
+                              "type": "string",
+                              "example": "pending"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"status\": \"failed\",\n    \"message\": \"currency is required\",\n    \"data\": \"null\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "currency is required"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "null"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "x-readme": {
+    "headers": []
+  },
+  "x-readme-fauxas": true
+}
